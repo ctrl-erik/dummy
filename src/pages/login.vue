@@ -3,10 +3,9 @@
         class="mx-auto pa-5 mt-5 w-50"
         elevation="5"
         rounded="lg">
-        <!-- @submit.prevent="handleSubmit" -->
         <v-container  class="d-flex justify-center">
             <v-form @submit.prevent="loginSubmit" v-model="valid" class="w-75">
-                <h2 class="text-center text-decoration-underline">Login</h2>
+                <h2 class="text-center text-decoration-underline mb-5">Login</h2>
                 <v-row>
                     <v-col cols="12" md="12">
                     <v-text-field
@@ -14,8 +13,9 @@
                         :rules="emailRules"
                         label="E-mail"
                         placeholder="Email address"
-                        required
-                    ></v-text-field>
+                        autocomplete="email"
+                        >
+                        </v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -25,8 +25,10 @@
                         :counter="50"
                         :rules="passRules"
                         label="Password"
-                        required
-                    ></v-text-field>
+                        type="password"
+                        autocomplete="current-password"
+                        >
+                        </v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>

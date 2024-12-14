@@ -202,7 +202,7 @@ export default {
                     emails: this.activeEmails
                 });
                 
-                if (response.statusText = "OK"){
+                if (response.statusText == "OK"){
                     this.success = true;
                     this.$router.push('/login');
                 } else {

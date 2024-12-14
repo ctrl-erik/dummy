@@ -21,14 +21,28 @@ const favModel = {
     },
     async deleteUserFav(user_id, item_id) {
         const deleteFavResult = await db.query(`DELETE FROM user_favourites
-                                                WHERE user_id = $2 
-                                                AND menu_item_id = $1`, [user_id, item_id]);
+                                                WHERE user_id = $1 
+                                                AND menu_item_id = $2`, [user_id, item_id]);
+
+        await db.query(`UPDATE menu_items
+            SET fav_count = fav_count - 1
+            WHERE menu_item_id = $1`, [item_id]);
+
         return deleteFavResult;
     },
     async addUserFav(user_id, item_id) {
-        const getUserRes = await db.query(`INSERT INTO user_favourites
-                                           VALUES ($1, $2)`, [user_id, item_id]);
-        return getUserRes;
+        try {
+            await db.query(`INSERT INTO user_favourites
+                            VALUES ($1, $2)`, [user_id, item_id]);
+
+            await db.query(`UPDATE menu_items
+                                SET fav_count = fav_count + 1
+                                WHERE menu_item_id = $1`, [item_id]);
+            return {success: true}
+        } catch (err){
+            console.error('Error with query adding to user favs: ', err);
+            return {success: false}
+        }
     }
 };
 
