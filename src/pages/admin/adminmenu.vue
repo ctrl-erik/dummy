@@ -28,17 +28,14 @@
             </template>
         </v-data-table>
     </v-container>
-    <Modal 
-        v-model="displayEditModal" 
-        title="Edit Menu Item" 
-        :message="modalMessage"
-        :messageStatus="modalMessageStatus"
-        >
+    <Modal v-model="displayEditModal" title="Edit Menu Item" :message="modalMessage"
+        :messageStatus="modalMessageStatus">
         <div class="d-flex justify-center align-center">
             <v-form @submit.prevent="editMenuItem" class="w-75">
                 <v-row>
                     <v-col cols="12" md="12">
-                        <v-text-field v-model="menu_item_id" label="ID" placeholder="Menu Item ID" disabled></v-text-field>
+                        <v-text-field v-model="menu_item_id" label="ID" placeholder="Menu Item ID"
+                            disabled></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -63,7 +60,8 @@
                 </v-row>
                 <v-row>
                     <v-col cols="12" md="12">
-                        <v-text-field v-model="fav_count" label="Popularity (fav. count)" placeholder="Popularity"></v-text-field>
+                        <v-text-field v-model="fav_count" label="Popularity (fav. count)"
+                            placeholder="Popularity"></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -100,15 +98,14 @@
                 </v-row>
                 <v-row>
                     <v-col cols="12" md="12">
-                        <v-select v-model="category"
-                                label="Category"
-                                :items="[1, 2, 3]">
+                        <v-select v-model="category" label="Category" :items="[1, 2, 3]">
                         </v-select>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col cols="12" md="12">
-                        <v-text-field v-model="fav_count" label="Popularity (fav. count)" placeholder="Popularity"></v-text-field>
+                        <v-text-field v-model="fav_count" label="Popularity (fav. count)"
+                            placeholder="Popularity"></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -157,7 +154,7 @@ export default {
         displayCreateModal: false,
         confirmDeleteItem: null,
 
-        
+
         //form bindings
         menu_item_id: '',
         price: '',
@@ -192,7 +189,7 @@ export default {
                     fav_count: this.fav_count,
                     display_img: this.display_img,
                 });
-                if (response.data.success == true){
+                if (response.data.success == true) {
                     this.menu_items = response.data.updated_menu
                     this.modalMessage = "Item successfully created.";
                     this.modalMessageStatus = "success";
@@ -228,7 +225,7 @@ export default {
         async editMenuItem() {
             try {
                 const response = await axios.post('http://localhost:3001/updateMenuItem', {
-                    item_id: this.menu_item_id, 
+                    item_id: this.menu_item_id,
                     item_name: this.item_name,
                     price: this.price,
                     desc: this.desc,
@@ -236,7 +233,7 @@ export default {
                     fav_count: this.fav_count,
                     display_img: this.display_img,
                 });
-                if (response.data.success == true){
+                if (response.data.success == true) {
                     this.menu_items = response.data.updated_menu
                     this.modalMessage = "Item successfully updated.";
                     this.modalMessageStatus = "success";
@@ -259,7 +256,7 @@ export default {
                 const response = await axios.post('http://localhost:3001/deleteMenuItem', {
                     menu_item_id: menu_item_id
                 });
-                if (response.data.success == true){
+                if (response.data.success == true) {
                     this.menu_items = response.data.updated_menu
                     this.modalMessage = "Item successfully deleted.";
                     this.modalMessageStatus = "success";
