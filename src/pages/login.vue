@@ -1,7 +1,7 @@
 <template>
     <v-card class="mx-auto pa-5 mt-5 w-50" elevation="5" rounded="lg">
         <v-container class="d-flex justify-center">
-            <v-form @submit.prevent="loginSubmit" v-model="valid" class="w-75">
+            <v-form ref="form" v-model="valid" @submit.prevent="loginSubmit" class="w-75">
                 <h2 class="text-center text-decoration-underline mb-5">Login</h2>
                 <v-row>
                     <v-col cols="12" md="12">
@@ -12,14 +12,14 @@
                 </v-row>
                 <v-row>
                     <v-col cols="12" md="12">
-                        <v-text-field v-model="pwd" :counter="50" :rules="passRules" label="Password" type="password"
+                        <v-text-field v-model="pwd" :rules="passRules" label="Password" type="password"
                             autocomplete="current-password">
                         </v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
-                    <v-alert class="ma-3" v-model="error" close-label="Close Alert" title="Error" type="error" closable>
-                        Email or password incorrect.
+                    <v-alert class="ma-3" v-model="message" close-label="Close Alert" :title="messageTitle" :type="messageType" closable>
+                        {{ messageContent }}
                     </v-alert>
                 </v-row>
                 <v-row>
@@ -49,48 +49,62 @@ const authStore = useAuthStore();
 export default {
     data: () => ({
         valid: false,
-        error: false,
+
+        message: false,
+        messageContent: '',
+        messageType: 'error',
+        messageTitle: 'Error',
+
         email: '',
         emailRules: [
-            value => {
-                if (value) return true
-                return 'E-mail is requred.'
-            },
-            value => {
-                if (/.+@.+\..+/.test(value)) return true
-                return 'E-mail must be valid.'
-            },
+            value => !!value || 'Email is required.',
+            value => /.+@.+\..+/.test(value) || 'E-mail must be valid.'
         ],
         pwd: '',
         passRules: [
-            value => {
-                if (value) return true
-                return 'Password is required.'
-            }
+            value => !!value || 'Password is required.'
         ]
     }),
 
     methods: {
         async loginSubmit() {
-            try {
-                const response = await axios.post('http://localhost:3001/login', {
-                    email: this.email,
-                    pwd: this.pwd
-                });
+            const formValidation = await this.$refs.form.validate();
 
-                if (response.statusText = "OK") {
-                    this.success = true;
-                    const user = response.data.user;
-                    authStore.login(user); // update state after login info matches
-                    this.$router.push('/');
-                } else {
-                    this.error = true;
+            if (formValidation.valid){
+                try {
+                    const response = await axios.post('http://localhost:3001/login', {
+                        email: this.email,
+                        pwd: this.pwd
+                    });
+                    
+                    if (response.statusText = "OK") {
+                        if (response.data.success){
+                            this.showMsg("Login credentials valid.", "Success", 'success')
+
+                            const user = response.data.user
+                            this.$refs.form.reset()
+                            authStore.login(user); // update state after login info matches
+
+                            setTimeout(() => {
+                                this.$router.push('/');
+                            }, 1000);
+                        } else {
+                            this.showMsg("Login credentials invalid.", "Invalid", 'error')
+                        }
+                    } else {
+                        this.showMsg("Error with login request.", "Error", 'error')
+                    }
+                } catch (error) {
+                    this.showMsg("Error trying to login user.", "Error", 'error')
                 }
-            } catch (error) {
-                this.valid = false;
-                console.error('Error with login!', error); // Handle error here
             }
         },
+        showMsg(content, title, type){
+            this.messageContent = content
+            this.messageTitle = title
+            this.messageType = type
+            this.message = true
+        }
     }
 }
 </script>
