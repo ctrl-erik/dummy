@@ -34,12 +34,8 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                    <v-alert class="ma-3" v-model="success" close-label="Close Alert" title="Success" type="success"
-                        closable>
-                        Successfully created user account. Redirecting...
-                    </v-alert>
-                    <v-alert class="ma-3" v-model="error" close-label="Close Alert" title="Error" type="error" closable>
-                        Issue with creating account.
+                    <v-alert class="ma-3" v-model="message" close-label="Close Alert" :title="messageTitle" :type="messageType" closable>
+                        {{ messageContent }}
                     </v-alert>
                 </v-row>
                 <v-row>
@@ -64,9 +60,15 @@ import axios from 'axios';
 
 export default {
     data: () => ({
+        valid: false,
+
+        message: false,
+        messageContent: '',
+        messageType: 'error',
+        messageTitle: 'Error',
+
         emailTaken: false,
         activeEmails: [],
-        valid: false,
         success: false,
         error: false,
         username: '',
@@ -85,20 +87,22 @@ export default {
             value => value?.length >= 10 || 'Password must be more than 10 characters.'
         ],
         confirm_pwd: '',
-        confirmRules: [
-            value => !!value || 'Password confirm is required.',
-            value => (value?.length >= 10) || 'Password must be more than 10 characters.',
-            value => (value === this.pwd) || 'Password must match.'
-        ]
     }),
     computed: {
-        reactiveEmailRules(){
+        reactiveEmailRules() {
             return [
                 value => !!value || 'E-mail is required.',
                 value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || 'E-mail must be valid.',
                 value => !this.emailTaken || 'This email is already in use.'
             ]
         },
+        confirmRules() {
+            return [
+                value => !!value || 'Password confirm is required.',
+                value => (value?.length >= 10) || 'Password must be more than 10 characters.',
+                value => (value === this.pwd) || 'Passwords must match.'
+            ];
+        }
     },
     methods: {
         async checkEmailAvailability() {
@@ -113,41 +117,43 @@ export default {
             }
         },
         async signUpSubmit() {
-            const isValid = this.$refs.form.validate();
+            const formValidation = await this.$refs.form.validate();
 
-            if (isValid) {
-                // Proceed with sign-up logic
+            if (formValidation.valid){
                 try {
-                    const response = await axios.post('http://localhost:3001/signup',
-                        {
-                            username: this.username,
-                            email: this.email,
-                            phone: this.phone,
-                            pwd: this.pwd,
-                            emails: this.activeEmails
-                        });
+                    const response = await axios.post('http://localhost:3001/signup', {
+                        username: this.username,
+                        email: this.email,
+                        phone: this.phone,
+                        pwd: this.pwd,
+                        emails: this.activeEmails
+                    });
+
                     if (response.statusText = "OK") {
-                        this.success = true;
+                        if (response.data.success){
+                            this.showMsg(response.data.message, "Success", 'success')
+                            this.$refs.form.reset()
 
-                        setTimeout(() => {
-                            this.$router.push('/login');
-                        }, 2000);
+                            setTimeout(() => {
+                                this.$router.push('/login');
+                            }, 1500);
+                        } else {
+                            this.showMsg(response.data.message, "Invalid", 'error')
+                        }
                     } else {
-                        this.error = true;
+                        this.showMsg("Error with sign-up request.", "Error", 'error')
                     }
-
                 } catch (error) {
-                    this.valid = false;
-                    console.error('There was an error!', error); // Handle error here
+                    this.showMsg("Error trying to sign-up user.", "Error", 'error')
                 }
-
-                this.success = true;
-                this.error = false;
-            } else {
-                this.success = false;
-                this.error = true;
-            }            
+            }          
         },
+        showMsg(content, title, type){
+            this.messageContent = content
+            this.messageTitle = title
+            this.messageType = type
+            this.message = true
+        }
     },
 }
 </script>

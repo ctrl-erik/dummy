@@ -27,7 +27,7 @@ const myLuganoTheme = {
     'secondary-darken-1': '#00730A',
     error: '#B00020',
     info: '#2196F3',
-    success: '#76FF4D',
+    success: '#00730a',
     warning: '#FFC14D',
   }
 }
