@@ -13,6 +13,9 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    chainWebpack: (config) => {
+        config.plugins.delete('preload'); // Disable automatic preloading
+    },
   plugins: [
     VueRouter(),
     Layouts(),

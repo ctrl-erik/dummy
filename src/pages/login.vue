@@ -39,10 +39,11 @@
     </v-card>
 </template>
 
-
 <script>
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth'
+
+const baseAPIURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 const authStore = useAuthStore();
 
@@ -72,7 +73,7 @@ export default {
 
             if (formValidation.valid){
                 try {
-                    const response = await axios.post('http://localhost:3001/login', {
+                    const response = await axios.post(baseAPIURL + '/login', {
                         email: this.email,
                         pwd: this.pwd
                     });
