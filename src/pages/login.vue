@@ -43,7 +43,7 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth'
 
-const baseAPIURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+const baseAPIURL = import.meta.env.VITE_API_BASE_URL;
 
 const authStore = useAuthStore();
 
