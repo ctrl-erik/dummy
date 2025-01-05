@@ -74,7 +74,7 @@ export default {
 
             if (formValidation.valid){
                 try {
-                    const response = await axios.post(baseAPIURL + '/login', {
+                    const response = await axios.post('https://luganoapi-ajebgtdkcpb7hqc3.eastus-01.azurewebsites.net/login', {
                         email: this.email,
                         pwd: this.pwd
                     });

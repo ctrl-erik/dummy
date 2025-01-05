@@ -60,6 +60,7 @@
 
 <script>
 import axios from 'axios';
+const baseAPIURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 export default {
     data: () => ({
@@ -86,7 +87,7 @@ export default {
     }),
     async created() {
         try {
-            const response = await axios.get('http://localhost:3001/users');
+            const response = await axios.get(baseAPIURL + '/users');
 
             this.users = response.data.rows
         } catch (error) {
@@ -104,7 +105,7 @@ export default {
         },
         async deleteUser(user_id) {
             try {
-                const response = await axios.post('http://localhost:3001/deleteUser', {
+                const response = await axios.post(baseAPIURL + '/deleteUser', {
                     user_id: user_id
                 });
                 this.users = response.data.users
@@ -121,7 +122,7 @@ export default {
         },
         async updateUser() {
             try {
-                const response = await axios.post('http://localhost:3001/updateUser', {
+                const response = await axios.post(baseAPIURL + '/updateUser', {
                     user_id: this.user_id,
                     username: this.username,
                     email: this.email,

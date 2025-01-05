@@ -57,6 +57,7 @@
 
 <script>
 import axios from 'axios';
+const baseAPIURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 export default {
     data: () => ({
@@ -110,7 +111,7 @@ export default {
                 return; // Skip validation if the email is empty or invalid
             }
             try {
-                const response = await axios.post('http://localhost:3001/checkEmail', { email: this.email });
+                const response = await axios.post(baseAPIURL + '/checkEmail', { email: this.email });
                 this.emailTaken = response.data.exists;
             } catch (error) {
                 console.error('Error checking email availability:', error);
@@ -121,7 +122,7 @@ export default {
 
             if (formValidation.valid){
                 try {
-                    const response = await axios.post('http://localhost:3001/signup', {
+                    const response = await axios.post(baseAPIURL + '/signup', {
                         username: this.username,
                         email: this.email,
                         phone: this.phone,

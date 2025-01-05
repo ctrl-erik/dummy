@@ -33,6 +33,8 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth'
 
+const baseAPIURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+
 const authStore = useAuthStore();
 
 export default {
@@ -48,7 +50,7 @@ export default {
         async showOrderDetails(order) {
 
             try {
-                const response = await axios.get('http://localhost:3001/getOrderItems', {
+                const response = await axios.get(baseAPIURL + '/getOrderItems', {
                     params: {
                         order_id: order.order_id
                     }
@@ -61,7 +63,7 @@ export default {
     },
     async created() {
         try {
-            const response = await axios.get('http://localhost:3001/getUserOrders', {
+            const response = await axios.get(baseAPIURL + '/getUserOrders', {
                 params: {
                     user_id: authStore.getUser.user_id
                 }

@@ -133,6 +133,7 @@
 
 <script>
 import axios from 'axios';
+const baseAPIURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 export default {
     data: () => ({
@@ -181,7 +182,7 @@ export default {
         },
         async createMenuItem() {
             try {
-                const response = await axios.post('http://localhost:3001/createMenuItem', {
+                const response = await axios.post(baseAPIURL + '/createMenuItem', {
                     item_name: this.item_name,
                     price: this.price,
                     desc: this.desc,
@@ -224,7 +225,7 @@ export default {
         },
         async editMenuItem() {
             try {
-                const response = await axios.post('http://localhost:3001/updateMenuItem', {
+                const response = await axios.post(baseAPIURL + '/updateMenuItem', {
                     item_id: this.menu_item_id,
                     item_name: this.item_name,
                     price: this.price,
@@ -253,7 +254,7 @@ export default {
         },
         async deleteMenuItem(menu_item_id) {
             try {
-                const response = await axios.post('http://localhost:3001/deleteMenuItem', {
+                const response = await axios.post(baseAPIURL + '/deleteMenuItem', {
                     menu_item_id: menu_item_id
                 });
                 if (response.data.success == true) {
@@ -270,7 +271,7 @@ export default {
         },
         async getsetMenuItems(cat_id) {
             try {
-                const response = await axios.get('http://localhost:3001/getAdminMenu', {
+                const response = await axios.get(baseAPIURL + '/getAdminMenu', {
                     params: {
                         category_id: cat_id
                     }

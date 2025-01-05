@@ -36,6 +36,8 @@
 import { useAuthStore } from '@/stores/auth'
 import axios from 'axios';
 
+const baseAPIURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+
 const authStore = useAuthStore();
 
 export default {
@@ -51,7 +53,7 @@ export default {
     methods: {
         async removeFav(menuItem) {
             try {
-                const response = await axios.get('http://localhost:3001/deleteFav', {
+                const response = await axios.get(baseAPIURL + '/deleteFav', {
                     params: {
                         user_id: authStore.getUser.user_id,
                         menu_item: menuItem.menu_item_id
@@ -64,7 +66,7 @@ export default {
         },
         async getFavourites(user_id) {
             try {
-                const response = await axios.get('http://localhost:3001/getFav', {
+                const response = await axios.get(baseAPIURL + '/getFav', {
                     params: {
                         user_id: user_id
                     }
@@ -80,7 +82,7 @@ export default {
         },
         async addFavToCart(favItem) {
             try {
-                const response = await axios.post('http://localhost:3001/addCart', {
+                const response = await axios.post(baseAPIURL + '/addCart', {
                     menu_item: favItem.menu_item_id,
                     cart_id: authStore.getUser.cart_id
                 });

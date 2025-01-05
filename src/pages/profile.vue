@@ -41,6 +41,7 @@ import axios from 'axios';
 import { useAuthStore } from '@/stores/auth'
 const authStore = useAuthStore();
 const user = authStore.getUser;
+const baseAPIURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 export default {
     data: () => ({
@@ -55,7 +56,7 @@ export default {
     methods: {
         async updateProfile() {
             try {
-                const response = await axios.post('http://localhost:3001/updateProfile', {
+                const response = await axios.post(baseAPIURL + '/updateProfile', {
                     user_id: authStore.getUser.user_id,
                     email: this.email,
                     phone: this.phone,

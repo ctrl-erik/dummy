@@ -16,6 +16,7 @@
 
 <script>
 import axios from 'axios';
+const baseAPIURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 export default {
     data: () => ({
@@ -29,7 +30,7 @@ export default {
     }),
     async created() {
         try {
-            const response = await axios.get('http://localhost:3001/getOrders');
+            const response = await axios.get(baseAPIURL + '/getOrders');
             this.sales = response.data.rows
         } catch (error) {
             console.error('There was an error getting user orders!', error);

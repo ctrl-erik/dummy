@@ -56,6 +56,8 @@ import axios from 'axios';
 import { useAuthStore } from '@/stores/auth'
 import { useCartStore } from '@/stores/cart'
 
+const baseAPIURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+
 const authStore = useAuthStore();
 
 export default {
@@ -83,7 +85,7 @@ export default {
         },
         async getsetMenuItems(cat_id) {
             try {
-                const response = await axios.get('http://localhost:3001/getMenu', {
+                const response = await axios.get( '/getMenu', {
                     params: {
                         category_id: cat_id
                     }
@@ -98,7 +100,7 @@ export default {
         async addItemToCart(menuItem) {
             try {
                 if (this.isAuth) { // logged in cart item add (db)
-                    const response = await axios.post('http://localhost:3001/addCart', {
+                    const response = await axios.post(baseAPIURL + '/addCart', {
                         menu_item: menuItem.menu_item_id,
                         cart_id: authStore.getUser.cart_id
                     });
@@ -119,7 +121,7 @@ export default {
         },
         async addFav(menuItem) {
             try {
-                const response = await axios.get('http://localhost:3001/addFav', {
+                const response = await axios.get(baseAPIURL + '/addFav', {
                     params: {
                         user_id: authStore.getUser.user_id,
                         menu_item: menuItem.menu_item_id

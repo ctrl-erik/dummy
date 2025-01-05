@@ -78,7 +78,7 @@ export default {
         const cartUser = authStore.getUser;
         try {
             if (authStore.isLoggedIn) {
-                const response = await axios.post('http://localhost:3001/getCart', {
+                const response = await axios.post(baseAPIURL + '/getCart', {
                     user_id: cartUser.user_id
                 });
                 this.cart_items = response.data.cart_items;
@@ -106,7 +106,7 @@ export default {
         async removeCartItem(cartItem) {
             if (authStore.isLoggedIn) { // logged in cart item add (db)
                 try {
-                    const response = await axios.post('http://localhost:3001/removeCartItem', {
+                    const response = await axios.post(baseAPIURL + '/removeCartItem', {
                         user_id: authStore.getUser.user_id,
                         menu_item_id: cartItem.item_id,
                         cart_id: authStore.getUser.cart_id
@@ -129,7 +129,7 @@ export default {
         async showPaymentPage() {
             try {
                 // get payment intent client secret from your backend
-                const response = await axios.post('http://localhost:3001/create-payment-intent', {
+                const response = await axios.post(baseAPIURL + '/create-payment-intent', {
                     amount: this.total * 100, // Convert total to cents
                     currency: 'cad'
                 });
@@ -159,7 +159,7 @@ export default {
                 const { error } = await this.stripe.confirmPayment({
                     elements: this.elements,
                     confirmParams: {
-                        return_url: 'http://localhost:3000/payment-success'
+                        return_url: 'https://yellow-pond-0d37d890f.4.azurestaticapps.net/payment-success'
                     },
                 });
 
@@ -172,7 +172,7 @@ export default {
                     if (authStore.isLoggedIn) {
 
                         // Create the order in the database
-                        await axios.post('http://localhost:3001/createUserOrder', {
+                        await axios.post(baseAPIURL + '/createUserOrder', {
                             user_id: authStore.getUser.user_id, // Ensure user_id is defined and valid
                             amount: this.total,
                         });
