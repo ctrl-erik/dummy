@@ -43,7 +43,7 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth'
 
-const baseAPIURL = "luganoapi-ajebgtdkcpb7hqc3.eastus-01.azurewebsites.net";
+const baseAPIURL = "https://luganoapi-ajebgtdkcpb7hqc3.eastus-01.azurewebsites.net";
 console.log(baseAPIURL);
 
 const authStore = useAuthStore();
