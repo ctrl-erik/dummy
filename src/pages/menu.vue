@@ -85,7 +85,7 @@ export default {
         },
         async getsetMenuItems(cat_id) {
             try {
-                const response = await axios.get( '/getMenu', {
+                const response = await axios.get(baseAPIURL + '/getMenu', {
                     params: {
                         category_id: cat_id
                     }
