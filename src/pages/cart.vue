@@ -48,8 +48,8 @@ const authStore = useAuthStore();
 
 const baseAPIURL = 'https://eriktest-e9e4a6huaabnakdf.canadacentral-01.azurewebsites.net';
 
-const stripeProdKey = import.meta.env.VITE_STRIPE_PKEY
-console.log(stripeProdKey)
+const stripePubKey = "pk_test_51QRpGNKrOstSqbtPMdvgyqMNuYAUEjyQhvVbc1EBdpM0bG6xJl5pt187oh0cPTLwVVZeCsVeGbvTLGZg17WuMY7r00pBWbevJk" // prod key safe to expose
+
 export default {
     watch: {
         cart_items: {
@@ -136,7 +136,7 @@ export default {
                 this.clientSecret = response.data.clientSecret;
 
                 // Initialize Stripe.js
-                this.stripe = await loadStripe(stripeProdKey); // used environement variable for prod key here
+                this.stripe = await loadStripe(stripePubKey); // used environement variable for prod key here
 
                 // Set up Stripe Elements
                 this.elements = this.stripe.elements({ clientSecret: this.clientSecret });
