@@ -36,7 +36,7 @@
 import { useAuthStore } from '@/stores/auth'
 import axios from 'axios';
 
-const baseAPIURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+const baseAPIURL = 'https://eriktest-e9e4a6huaabnakdf.canadacentral-01.azurewebsites.net';
 
 const authStore = useAuthStore();
 
