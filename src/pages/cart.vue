@@ -49,7 +49,7 @@ const authStore = useAuthStore();
 const baseAPIURL = 'https://eriktest-e9e4a6huaabnakdf.canadacentral-01.azurewebsites.net';
 
 const stripeProdKey = import.meta.env.VITE_STRIPE_PKEY
-
+console.log(stripeProdKey)
 export default {
     watch: {
         cart_items: {
