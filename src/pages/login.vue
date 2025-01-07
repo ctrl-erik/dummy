@@ -43,7 +43,7 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth'
 
-const baseAPIURL = "https://luganoapi-ajebgtdkcpb7hqc3.eastus-01.azurewebsites.net";
+const baseAPIURL = "https://eriktest-e9e4a6huaabnakdf.canadacentral-01.azurewebsites.net";
 console.log(baseAPIURL);
 
 const authStore = useAuthStore();
@@ -74,7 +74,7 @@ export default {
 
             if (formValidation.valid){
                 try {
-                    const response = await axios.post('https://luganoapi-ajebgtdkcpb7hqc3.eastus-01.azurewebsites.net/login', {
+                    const response = await axios.post(baseAPIURL + '/login', {
                         email: this.email,
                         pwd: this.pwd
                     });
